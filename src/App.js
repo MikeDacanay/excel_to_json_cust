@@ -28,15 +28,7 @@ function readExcelUpload(file, event){
           .load(event.target.result)
           .then((workbook) => {
             populateContentWithData(workbook);
-
-            // console.log(content);
-
-            var fileToSave = new Blob([JSON.stringify(content, null, 2)], {
-              type: 'application/json'
-            });
-            
-            // Save the file
-            saveAs(fileToSave, 'content.json')
+            createJsonFile();
           });
     };
       
@@ -71,8 +63,17 @@ function populateContentWithChapters(wrksht){
           };
         }
       }
-      
+
       content[wrksht.name].push(obj);
     }
   });
+}
+
+function createJsonFile(){
+  var fileToSave = new Blob([JSON.stringify(content, null, 2)], {
+    type: 'application/json'
+  });
+  
+  // Save the file
+  saveAs(fileToSave, 'content.json')
 }
