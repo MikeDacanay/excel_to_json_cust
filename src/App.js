@@ -1,25 +1,63 @@
-import logo from './logo.svg';
+import Excel from "exceljs/dist/es5/exceljs.browser";
+import saveAs from 'file-saver';
+
 import './App.css';
 
-function App() {
+export const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <input type="file" onChange={uploadWorkbook.bind(null,console.log)} />
+  )
 }
 
-export default App;
+const content = {};
+
+function uploadWorkbook(cb, event){
+  let input = event.target;
+  let file = input.files[0];
+
+  readExcelUpload(file, event);
+}
+
+function readExcelUpload(file, event){
+  if(file){
+    let reader = new FileReader();
+
+
+    reader.onload = (event) => {
+        new Excel.Workbook().xlsx
+          .load(event.target.result)
+          .then((workbook) => {
+            populateContentWithData(workbook);
+
+            // console.log(content);
+
+            var fileToSave = new Blob([JSON.stringify(content)], {
+              type: 'application/json'
+            });
+            
+            // Save the file
+            saveAs(fileToSave, 'content.json')
+          });
+    };
+      
+    reader.readAsArrayBuffer(file);
+  }
+}
+
+function populateContentWithData(data) {
+  for(let worksheet of data.worksheets){
+      content[worksheet.name] = [];        
+      populateContentWithChapters(worksheet);
+  };
+}   
+
+function populateContentWithChapters(wrksht){
+  wrksht.eachRow((row, rowN) => {            
+      content[wrksht.name].push({
+          element: row.values[1],
+          language: {
+              english: row.values[2],  
+          },
+      })
+  });
+}
