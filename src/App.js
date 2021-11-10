@@ -52,12 +52,27 @@ function populateContentWithData(data) {
 }   
 
 function populateContentWithChapters(wrksht){
-  wrksht.eachRow((row, rowN) => {            
-      content[wrksht.name].push({
-          element: row.values[1],
-          language: {
-              english: row.values[2],  
-          },
-      })
+  let header = [];
+
+  wrksht.eachRow(({values}, rowN) => {   
+    const row = [...values];
+    row.shift();  
+
+    if(rowN === 1){
+      header = row;
+    }else {
+      const obj = {};
+      for(let [i, item] of row.entries()){
+        if(i === 0){
+          obj[header[i]] = item;
+        }else{
+          obj.language = {
+            [header[i]]: item,
+          };
+        }
+      }
+      
+      content[wrksht.name].push(obj);
+    }
   });
 }
