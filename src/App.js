@@ -31,7 +31,7 @@ function readExcelUpload(file, event){
 
             // console.log(content);
 
-            var fileToSave = new Blob([JSON.stringify(content)], {
+            var fileToSave = new Blob([JSON.stringify(content, null, 2)], {
               type: 'application/json'
             });
             
