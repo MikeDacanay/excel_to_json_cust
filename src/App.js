@@ -48,21 +48,23 @@ function populateContentWithChapters(wrksht){
 
   wrksht.eachRow(({values}, rowN) => {   
     const row = [...values];
+
     row.shift();  
 
     if(rowN === 1){
       header = row;
     }else {
-      const obj = {};
+      const obj = {
+        language: {},
+      };
+
       for(let [i, item] of row.entries()){
         if(i === 0){
           obj[header[i]] = item;
         }else{
-          obj.language = {
-            [header[i]]: item,
-          };
+          obj.language[header[i]] = item;
         }
-      }
+      }      
 
       content[wrksht.name].push(obj);
     }
