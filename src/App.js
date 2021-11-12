@@ -5,14 +5,21 @@ import './App.css';
 
 export const App = () => {
 
-  const [inputGroups, setInputGroups] = useState([]);
+  // const [inputGroups, setInputGroups] = useState([]);
 
   return (
-    <div className="" style={{'paddingTop': '100px'}}>
-      {inputGroups}
-      <button onClick={() => addGroupHandler([inputGroups, setInputGroups])}>Add Group</button>
+    <div className=""
+      style={{
+        'width': '100vw',
+        'height': '100vh',
+        'display': 'flex',
+        'justifyContent': 'center',
+        'alignItems': 'center',
+      }}>
+      {/* {inputGroups}
+      <button onClick={() => addGroupHandler([inputGroups, setInputGroups])}>Add Group</button> */}
 
-      <input style={{'display': 'flex'}}
+      <input
         type="file" 
         onChange={uploadWorkbook.bind(null,console.log)} />
     </div>        
